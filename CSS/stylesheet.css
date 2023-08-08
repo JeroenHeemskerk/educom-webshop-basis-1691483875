@@ -1,1 +1,22 @@
-/* Cascade Style Sheet for this website */
+body {
+  max-width: 800px;
+  margin: auto;
+}
+h1 {
+    font-size: 50px;
+    text-align: center;
+}
+footer {
+    background-color: black;
+    color: white;
+    font-size: 10px;
+    text-align: right;
+}
+a {
+    text-decoration: none;
+    color: white;
+    background-color: blue;
+}
+input[type=text] {
+    width: 400px;
+}
