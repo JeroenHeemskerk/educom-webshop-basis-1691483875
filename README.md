@@ -1,4 +1,4 @@
-# Introductie HTML / CSS / PHP als basis voor een Webshop
+# Introductie HTML / CSS / PHP als basis voor een Webshop test5
 
 HTML is de opmaak taal van het internet. Het is een vrij uitgebreid systeem van stuur-codes om een webpagina op een bepaalde manier te tonen. Anders dan layout, zit er geen functionaliteit in HTML.  
 HTML is vrij uitgebreid en je zult gaandeweg je loopbaan nieuwe dingen leren toepassen en met nieuwe versie moeten gaan werken. 
