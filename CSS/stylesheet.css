@@ -1,22 +1,40 @@
 body {
+  font-size: 12px;
+  color: darkgray;
   max-width: 800px;
   margin: auto;
+}
+select {
+    font-size: 12px;
+    color: darkgray;
+}
+input {
+    font-size: 12px;
+    color: darkgray;
 }
 h1 {
     font-size: 50px;
     text-align: center;
-}
-footer {
-    background-color: black;
-    color: white;
-    font-size: 10px;
-    text-align: right;
 }
 a {
     text-decoration: none;
     color: white;
     background-color: blue;
 }
-input[type=text] {
+input[type=text],[type=tel],[type=email] {
     width: 400px;
+}
+ul[name=menu] {
+    list-style-type: none;
+    padding-left: 0;
+}
+li[name=menuitem] {
+    display: inline-block;
+
+}
+footer {
+    background-color: black;
+    color: white;
+    font-size: 10px;
+    text-align: right;
 }
