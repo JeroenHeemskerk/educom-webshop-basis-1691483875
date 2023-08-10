@@ -12,7 +12,7 @@ h1 {
     font-size: 50px;
     text-align: center;
 }
-a {
+ul.menu li > a {
     text-decoration: none;
     color: white;
     background-color: blue;
@@ -20,9 +20,10 @@ a {
 input {
     font-size: 12px;
     color: darkgray;
-}
-input.input {
     width: 400px;
+}
+input[type="radio"], input[type="submit"] {
+    width: auto;
 }
 ul.menu {
     list-style-type: none;

@@ -60,9 +60,10 @@ function test_input($data) {
 <html>
     <head>
         <link rel="stylesheet" href="CSS/stylesheet.css">
-        <h1>Contact</h1>
+        <title>Contact</title>
     </head>
     <body>
+        <h1>Contact</h1>
             <ul class="menu">
                 <li class="menuitem"><a href="index.html">Home</a></li>
                 <li class="menuitem"><a href="about.html">About</a></li>
