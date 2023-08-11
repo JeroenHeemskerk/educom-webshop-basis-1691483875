@@ -1,12 +1,17 @@
 <?php
-$firstnameErr = $lastnameErr = $emailErr = $phoneErr = $comprefErr = $feedbackErr = "";
-$firstname = $lastname = $email = $phone = $compref = $feedback = "";
+$firstnameErr = $lastnameErr = $emailErr = $phoneErr = $comprefErr = $feedbackErr = $prefErr = "";
+$firstname = $lastname = $email = $phone = $compref = $feedback = $pref = "";
 $valid = false;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if (empty($_POST["Pref"])) {
+        $prefErr = "aanhef is verplicht";
+      } else {
+        $pref = test_input($_POST["Pref"]);
+    }
     if (empty($_POST["Firstname"])) {
       $firstnameErr = "voornaam is verplicht";
       } else {
-        if (ctype_alpha($_POST["Firstname"]) == true) {
+        if (ctype_alpha($_POST["Firstname"])) {
             $firstname = test_input($_POST["Firstname"]);
         } else {
             $firstnameErr = "je mag geen nummer hebben in je naam";
@@ -15,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($_POST["Lastname"])) {
         $lastnameErr = "achternaam is verplicht";
       } else {
-        if (ctype_alpha($_POST["Lastname"]) == true) {
+        if (ctype_alpha($_POST["Lastname"])) {
             $lastname = test_input($_POST["Lastname"]);
         } else {
             $lastnameErr = "je mag geen nummer hebben in je naam";
@@ -70,14 +75,16 @@ function test_input($data) {
                 <li class="menuitem"><a href="contact.php">Contact</a></li>
             </ul>
          <?php if (!$valid) {?>   
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+        <form action="contact.php" method="post">
             <div>
                 <label for="Pref">aanhef:</label>
                 <select name="Pref" id="Pref">
-                    <option name="Sir" value="Meneer" <?php if (!empty($_POST["Pref"]) && $_POST['Pref'] == "meneer") echo 'selected="selected" '; ?>>Meneer</option>
+                    <option name="choice" value="">maak uw keuze</option>
+                    <option name="Sir" value="Meneer" <?php if (!empty($_POST["Pref"]) && $_POST['Pref'] == "Meneer") echo 'selected="selected" '; ?>>Meneer</option>
                     <option name="Madam" value="Mevrouw" <?php if (!empty($_POST["Pref"]) && $_POST['Pref'] == "Mevrouw") echo 'selected="selected" '; ?>>Mevrouw</option>
                     <option name="Nothing" value="Niet" <?php if (!empty($_POST["Pref"]) && $_POST['Pref'] == "Niet") echo 'selected="selected" '; ?>>Niet</option>
                 </select>
+                <?php echo '<span class="error">' . $prefErr . '</span>';?>
             </div>
             <div>
                 <label for="Firstname">Voornaam:</label>
@@ -85,7 +92,7 @@ function test_input($data) {
                     value="<?php if (!empty($_POST["Firstname"])){
                         echo $_POST["Firstname"]; 
                     }?>">
-                <?php echo '<span style="color:#f00;">', $firstnameErr;?>
+                <?php echo '<span class="error">' . $firstnameErr . '</span>';?>
             </div>
             <div>
                 <label for="Lastname">Achternaam:</label>
@@ -93,7 +100,7 @@ function test_input($data) {
                     value="<?php if (!empty($_POST["Lastname"])){
                         echo $_POST["Lastname"]; 
                     }?>">
-                <?php echo '<span style="color:#f00;">', $lastnameErr;?>
+                <?php echo '<span class="error">' . $lastnameErr . '</span>';?>
             </div>
             <div>
                 <label for="Email">Email:</label>
@@ -101,7 +108,7 @@ function test_input($data) {
                     value="<?php if (!empty($_POST["Email"])){
                         echo $_POST["Email"]; 
                     }?>">
-                <?php echo '<span style="color:#f00;">', $emailErr;?>
+                <?php echo '<span class="error">' . $emailErr . '</span>';?>
             </div>
             <div>
                 <label for="PhoneNum">Telefoonnummer:</label>
@@ -109,7 +116,7 @@ function test_input($data) {
                     value="<?php if (!empty($_POST["PhoneNum"])){
                         echo $_POST["PhoneNum"]; 
                     }?>">
-                <?php echo '<span style="color:#f00;">', $phoneErr;?>
+                <?php echo '<span class="error">' . $phoneErr . '</span>';?>
             </div>
             <div>
                 <label for="ComPref">Op welke manier wilt u bereikt worden?</label>
@@ -124,15 +131,15 @@ function test_input($data) {
                             echo ($_POST["ComPref"] =="Phone")?"checked":'' ;
                     }?>>
                 <label for="phone">Telefoon</label>
-                <?php echo '<span style="color:#f00;">', $comprefErr;?>
+                <?php echo '<span class="error">' . $comprefErr . '</span>';?>
             </div>
             <div>
                 <label for="Feedback">Waarover wilt u contact opnemen?</label>
-                <textarea id="Feedback" name="Feedback" rows="4" cols="50">
-                    <?php if (!empty($_POST["Feedback"])) {
-                        echo $_POST["Feedback"]; 
+                <textarea id="Feedback" name="Feedback" rows="4" cols="50"><?php 
+                if (!empty($_POST["Feedback"])) {
+                    echo $_POST["Feedback"];
                     }?></textarea>
-                <?php echo '<span style="color:#f00;">', $feedbackErr;?>
+                <?php echo '<span class="error">' . $feedbackErr . '</span>';?>
             </div>
             <div>
                 <input type="submit" value="verstuur">
