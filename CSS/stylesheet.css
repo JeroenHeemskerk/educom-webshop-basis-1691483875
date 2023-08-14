@@ -43,7 +43,7 @@ footer {
     font-size: 10px;
     text-align: right;
 }
-label {
+label.form {
     width: 200px;
     display: inline-block;
 }
