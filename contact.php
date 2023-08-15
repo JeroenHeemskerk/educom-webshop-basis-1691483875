@@ -10,7 +10,7 @@ function ShowCheckContent() {
             $pref = test_input($_POST["Pref"]);
         }
         if (empty($_POST["Firstname"])) {
-        $firstnameErr = "voornaam is verplicht";
+            $firstnameErr = "voornaam is verplicht";
         } else {
             if (ctype_alpha($_POST["Firstname"])) {
                 $firstname = test_input($_POST["Firstname"]);
@@ -133,8 +133,8 @@ function test_input($data) {
                 <input type="submit" value="verstuur">
             </div>
         </form>
-        ';}
-        function ShowThanksContent($data) { echo '
+    ';}
+    function ShowThanksContent($data) { echo '
         <label>Beste </label>';
         echo $data["pref"];
         echo $_POST["Firstname"];
@@ -153,4 +153,4 @@ function test_input($data) {
         echo '<br>
         <label>Uw feedback: </label>';
         echo $_POST["Feedback"]; echo '<br>
-        ';}
+    ';}

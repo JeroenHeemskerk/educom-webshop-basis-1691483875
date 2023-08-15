@@ -6,8 +6,7 @@ function GetRequestedPage(){
     $requested_type = $_SERVER['REQUEST_METHOD']; 
     if ($requested_type == 'POST'){
         $requested_page = GetPostVar('page','contact'); 
-    } 
-    else{ 
+    }else{ 
         $requested_page = GetUrlVar('page','home'); 
     } 
     return $requested_page; 
@@ -100,12 +99,12 @@ function ShowContent($page){
 }
 
 function ShowContactContent(){
-        $data = ShowCheckContent();
-        if($data['valid'] == false){
-            ShowFormContent($data);
-        } else {
-            ShowThanksContent($data);
-        }
+    $data = ShowCheckContent();
+    if($data['valid'] == false){
+        ShowFormContent($data);
+    } else {
+        ShowThanksContent($data);
+    }
 }
 
 function ShowFooter(){
