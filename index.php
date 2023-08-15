@@ -5,10 +5,10 @@ ShowResponsePage($page);
 function GetRequestedPage(){
     $requested_type = $_SERVER['REQUEST_METHOD']; 
     if ($requested_type == 'POST'){
-        $requested_page = getPostVar('page','contact'); 
+        $requested_page = GetPostVar('page','contact'); 
     } 
     else{ 
-        $requested_page = getUrlVar('page','home'); 
+        $requested_page = GetUrlVar('page','home'); 
     } 
     return $requested_page; 
 }
@@ -86,17 +86,26 @@ function ShowContent($page){
     switch ($page){
         case 'home':
             require('home.php');
-            #ShowHomeContent();
+            ShowHomeContent();
             break;
         case 'about':
             require('about.php');
-            #ShowAboutContent();
+            ShowAboutContent();
             break;
         case 'contact':
             require('contact.php');
-            #ShowContactContent();
+            ShowContactContent();
             break;
     }
+}
+
+function ShowContactContent(){
+        $data = ShowCheckContent();
+        if($data['valid'] == false){
+            ShowFormContent($data);
+        } else {
+            ShowThanksContent($data);
+        }
 }
 
 function ShowFooter(){
