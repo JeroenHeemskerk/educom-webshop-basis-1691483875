@@ -69,6 +69,9 @@ function test_input($data) {
     function ShowFormContent($data) {echo '   
         <form action="index.php" method="post">
             <div>
+                <input type="hidden" name="page" value="contact">
+            </div>
+            <div>
                 <label class="form" for="Pref">aanhef:</label>
                 <select name="Pref" id="Pref">
                     <option name="choice" value="">maak uw keuze</option>

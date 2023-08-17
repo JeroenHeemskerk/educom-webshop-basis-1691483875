@@ -5,7 +5,7 @@ ShowResponsePage($page);
 function GetRequestedPage(){
     $requested_type = $_SERVER['REQUEST_METHOD']; 
     if ($requested_type == 'POST'){
-        $requested_page = GetPostVar('page','contact'); 
+        $requested_page = GetPostVar('page','home'); 
     }else{ 
         $requested_page = GetUrlVar('page','home'); 
     } 
@@ -70,6 +70,9 @@ function ShowHeader($page){
         case 'contact':
             Echo '<h1>Contact</h1>';
             break;
+        case 'register':
+            Echo '<h1>Register</h1>';
+            break;
     }
 }
 
@@ -78,6 +81,7 @@ function ShowMenu(){
     <li class="menuitem"><a href="index.php?page=home">Home</a></li>
     <li class="menuitem"><a href="index.php?page=about">About</a></li>
     <li class="menuitem"><a href="index.php?page=contact">Contact</a></li>
+    <li class="menuitem"><a href="index.php?page=register">Register</a></li>
     </ul>';
 }
 
@@ -95,6 +99,19 @@ function ShowContent($page){
             require('contact.php');
             ShowContactContent();
             break;
+        case 'register':
+            require('register.php');
+            ShowRegisterContent();
+            break;
+    }
+}
+
+function ShowRegisterContent(){
+    $data = CheckRegister();
+    if($data['valid'] == false){
+        ShowRegisterForm($data);
+    } else {
+        #$_GET("index.php?page=home");
     }
 }
 

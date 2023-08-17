@@ -1,0 +1,5 @@
+[email]|[naam]|[wachtwoord]
+coach@man-kind.nl|Geert Weggemans|halt!
+s@s.com|s|s
+g@g.com|gast|gast
+saaaaa@s.com|s|s
