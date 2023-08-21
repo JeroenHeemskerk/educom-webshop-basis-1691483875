@@ -1,21 +1,47 @@
 <?php
+include 'sessions.php';
+include 'login.php';
+include 'register.php';
 $page = GetRequestedPage();
-ShowResponsePage($page);
+$data = ProcessRequest($page);
+ShowResponsePage($data);
+
+function ProcessRequest($page){
+    switch ($page){
+        case 'register':
+            $data = CheckRegister();
+            if($data['registervalid'] == true){
+                StoreUser($data['email'], $data['name'], $data['password']);
+                $page = 'login';
+                $data['loginvalid'] = "";
+            }
+            break;
+        case 'login':
+            $data = CheckLogin();
+            if($data['loginvalid'] == true){
+                LoginUser($data);
+                $page = 'home';
+            }
+            break;
+    }
+    $data['page'] = $page;
+    return $data;
+}
 
 function GetRequestedPage(){
     $requested_type = $_SERVER['REQUEST_METHOD']; 
     if ($requested_type == 'POST'){
         $requested_page = GetPostVar('page','home'); 
-    }else{ 
+    }else{
         $requested_page = GetUrlVar('page','home'); 
     } 
     return $requested_page; 
 }
 
-function ShowResponsePage($page){
+function ShowResponsePage($data){
     BeginDocument();
     ShowHeadSection();
-    ShowBodySection($page);
+    ShowBodySection($data);
     EndDocument();
 }
 
@@ -43,11 +69,11 @@ function ShowHeadSection(){
     </head>';
 }
 
-function ShowBodySection($page) { 
+function ShowBodySection($data) { 
    echo '    <body>' . PHP_EOL; 
-   ShowHeader($page);
+   ShowHeader($data);
    ShowMenu(); 
-   ShowContent($page); 
+   ShowContent($data); 
    ShowFooter(); 
    echo '    </body>' . PHP_EOL; 
 } 
@@ -56,9 +82,9 @@ function EndDocument(){
     echo '</html>';
 }
 
-function ShowHeader($page){
-    switch ($page){
-        case '':
+function ShowHeader($data){
+    switch ($data['page']){
+        default:
             echo '<h1>gefaald</h1>';
             break;
         case 'home':
@@ -73,6 +99,12 @@ function ShowHeader($page){
         case 'register':
             Echo '<h1>Register</h1>';
             break;
+        case 'login':
+            Echo '<h1>Login</h1>';
+            break;
+        case 'logout':
+            Echo '<h1>Logout</h1>';
+            break;
     }
 }
 
@@ -81,12 +113,40 @@ function ShowMenu(){
     <li class="menuitem"><a href="index.php?page=home">Home</a></li>
     <li class="menuitem"><a href="index.php?page=about">About</a></li>
     <li class="menuitem"><a href="index.php?page=contact">Contact</a></li>
-    <li class="menuitem"><a href="index.php?page=register">Register</a></li>
-    </ul>';
+    ';
+    if(IsUserLogIn()){
+        #$name = getLogInUsername();
+        #echo '<li class="menuitem"><a href="index.php?page=logout">Logout'; $name; echo'</a></li>';
+        Showmenuitem("logout", "Logout");
+    }else{
+        #echo '<li class="menuitem"><a href="index.php?page=register">Register</a></li>
+        #<li class="menuitem"><a href="index.php?page=login">Login</a></li>';
+        Showmenuitem("register", "Registeer");
+        Showmenuitem("login", "Login");
+    }
+    echo '</ul>';
 }
 
-function ShowContent($page){
-    switch ($page){
+function Showmenuitem($name, $message){
+    switch($name){
+        case 'logout':
+            echo'<li class="menuitem"><a href="index.php?page=logout">Logout</a></li>';
+            break;
+        case 'login':
+            echo'<li class="menuitem"><a href="index.php?page=login">Login</a></li>';
+            break;
+        case 'register':
+            echo'<li class="menuitem"><a href="index.php?page=register">Register</a></li>';
+            break;
+    }
+}
+
+function ShowContent($data){
+    switch ($data['page']){
+        default:
+            echo '<a>error 404 pagina niet gevonden</a><br>
+            <li class="menuitem"><a href="index.php?page=home">Terug gaan naar de homepagina</a></li>';
+            break;
         case 'home':
             require('home.php');
             ShowHomeContent();
@@ -100,23 +160,34 @@ function ShowContent($page){
             ShowContactContent();
             break;
         case 'register':
-            require('register.php');
-            ShowRegisterContent();
+            #require('register.php');
+            ShowRegisterContent($data);
+            break;
+        case 'login':
+            #require('login.php');
+            ShowLoginContent($data);
+            break;
+        case 'logout':
+            #require('logout.php');
+            LogoutUser();
             break;
     }
 }
 
-function ShowRegisterContent(){
-    $data = CheckRegister();
-    if($data['valid'] == false){
+function ShowRegisterContent($data){
+    if($data['registervalid'] == false){
         ShowRegisterForm($data);
-    } else {
-        #$_GET("index.php?page=home");
+    }
+}
+
+function ShowLoginContent($data){
+    if($data['loginvalid'] == false){
+        ShowLoginForm($data);
     }
 }
 
 function ShowContactContent(){
-    $data = ShowCheckContent();
+    $data = ValidateContact();
     if($data['valid'] == false){
         ShowFormContent($data);
     } else {

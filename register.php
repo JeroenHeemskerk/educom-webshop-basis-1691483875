@@ -1,14 +1,15 @@
 <?php 
+include_once "user.service.php";
 function CheckRegister() {
     $nameErr = $emailErr = $passwordErr = $passwordcheckErr = "";
     $name = $email = $password = $passwordcheck = "";
-    $valid = false;
+    $registervalid = false;
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (empty($_POST["name"])) {
             $nameErr = "naam is verplicht";
         } else {
             if (ctype_alpha($_POST["name"])) {
-                $name = test_input($_POST["name"]);
+                $name = TestInput($_POST["name"]);
             } else {
                 $nameErr = "nummers in je naam zijn niet toegstaan";
             }
@@ -17,7 +18,7 @@ function CheckRegister() {
             $emailErr = "email is verplicht";
         } else {
             if (filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
-                $email = test_input($_POST["email"]);
+                $email = TestInput($_POST["email"]);
             } else {
                 $emailErr = "je moet een echt emailadres invullen";
             }
@@ -30,32 +31,20 @@ function CheckRegister() {
                     $passwordErr = "wachtwoorden moeten hetzelfde zijn";
                     $passwordcheckErr = "wachtwoorden moeten hetzelfde zijn";
                 } else {
-                    $password = test_input($_POST["password"]);
-                    $passwordcheck = test_input($_POST["password"]);
+                    $password = TestInput($_POST["password"]);
+                    $passwordcheck = TestInput($_POST["password"]);
                 }
         if (!empty($name) && !empty($email) && !empty($password) && !empty($passwordcheck)) {
-            $myfile = fopen("users/users.txt", "a");
-                $filecontent = file_get_contents("users/users.txt");
-                if(strpos($filecontent, $email) == false){
-                    $valid = true;
-                    $txt = "\n$email|$name|$password";
-                    fwrite($myfile, $txt);
+                if(DoesEmailExist($email) == false){
+                    $registervalid = true;
                 }else {
                     $emailErr = "de email bestaat al";
                 }
-            fclose($myfile);
         }
     }
 
-    return array ("valid"=> $valid, "name" => $name, "email" => $email, "password" => $password, "passwordcheck" => $passwordcheck, 
+    return array ("registervalid"=> $registervalid, "name" => $name, "email" => $email, "password" => $password, "passwordcheck" => $passwordcheck, 
     "nameErr" => $nameErr, "emailErr" => $emailErr, "passwordErr" => $passwordErr, "passwordcheckErr" => $passwordcheckErr);
-}
-
-function test_input($data) {
-  $data = trim($data);
-  $data = stripslashes($data);
-  $data = htmlspecialchars($data);
-  return $data;
 }
 
 function ShowRegisterForm($data) { echo '

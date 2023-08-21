@@ -1,5 +1,6 @@
 <?php
-function ShowCheckContent() {
+include_once "user.service.php";
+function ValidateContact() {
     $firstnameErr = $lastnameErr = $emailErr = $phoneErr = $comprefErr = $feedbackErr = $prefErr = "";
     $firstname = $lastname = $email = $phone = $compref = $feedback = $pref = "";
     $valid = false;
@@ -7,13 +8,13 @@ function ShowCheckContent() {
         if (empty($_POST["Pref"])) {
             $prefErr = "aanhef is verplicht";
         } else {
-            $pref = test_input($_POST["Pref"]);
+            $pref = TestInput($_POST["Pref"]);
         }
         if (empty($_POST["Firstname"])) {
             $firstnameErr = "voornaam is verplicht";
         } else {
             if (ctype_alpha($_POST["Firstname"])) {
-                $firstname = test_input($_POST["Firstname"]);
+                $firstname = TestInput($_POST["Firstname"]);
             } else {
                 $firstnameErr = "nummers in je naam zijn niet toegstaan";
             }
@@ -22,7 +23,7 @@ function ShowCheckContent() {
             $lastnameErr = "achternaam is verplicht";
         } else {
             if (ctype_alpha($_POST["Lastname"])) {
-                $lastname = test_input($_POST["Lastname"]);
+                $lastname = TestInput($_POST["Lastname"]);
             } else {
                 $lastnameErr = "nummers in je naam zijn niet toegstaan";
             } 
@@ -31,7 +32,7 @@ function ShowCheckContent() {
             $emailErr = "email is verplicht";
         } else {
             if (filter_var($_POST["Email"], FILTER_VALIDATE_EMAIL)) {
-                $email = test_input($_POST["Email"]);
+                $email = TestInput($_POST["Email"]);
             } else {
                 $emailErr = "je moet een echt emailadres invullen";
             }
@@ -39,17 +40,17 @@ function ShowCheckContent() {
         if (empty($_POST["PhoneNum"])) {
             $phoneErr = "telefoonnummer is verplicht";
         } else {
-            $phone = test_input($_POST["PhoneNum"]);
+            $phone = TestInput($_POST["PhoneNum"]);
         }
         if (empty($_POST["ComPref"])) {
             $comprefErr = "keuze is verplicht";
         } else {
-            $compref = test_input($_POST["ComPref"]);
+            $compref = TestInput($_POST["ComPref"]);
         }
         if (empty($_POST["Feedback"])) {
             $feedbackErr = "feedback is verplicht";
         } else {
-            $feedback = test_input($_POST["Feedback"]);
+            $feedback = TestInput($_POST["Feedback"]);
         }
         if (!empty($firstname) && !empty($lastname) && !empty($email) && !empty($phone) && !empty($compref) && !empty($feedback)) {
             $valid = true;
@@ -58,13 +59,6 @@ function ShowCheckContent() {
     return array ("valid"=> $valid, "firstname" => $firstname, "lastname" => $lastname, "email" => $email, "phone" => $phone,
      "compref" => $compref, "feedback" => $feedback, "pref" => $pref, "firstnameErr" => $firstnameErr, "lastnameErr" => $lastnameErr, 
      "emailErr" => $emailErr, "phoneErr" => $phoneErr, "comprefErr" => $comprefErr, "feedbackErr" => $feedbackErr, "prefErr" => $prefErr,);
-}
-
-function test_input($data) {
-  $data = trim($data);
-  $data = stripslashes($data);
-  $data = htmlspecialchars($data);
-  return $data;
 }
     function ShowFormContent($data) {echo '   
         <form action="index.php" method="post">
