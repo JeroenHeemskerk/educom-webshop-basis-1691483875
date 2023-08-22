@@ -13,7 +13,6 @@ function CheckLogin() {
             }else{
                 $name = $user["name"];
                 $loginvalid = true;
-                #$test = $_SESSION["name"];
             }
         }
     return array ("loginvalid"=> $loginvalid, "email" => $email, "password" => $password, 
@@ -28,14 +27,14 @@ function ShowLoginForm($data) { echo '
         <div>
             <label class="form" for="email">email:</label>
             <input class="input" type="text" id="email" name="email" 
-                value="'.(!empty($_POST["email"]) ? $_POST["email"] : '') .'">';
+                value="'.(!empty($data["email"]) ? $data["email"] : '') .'">';
             echo '<span class="error">' . $data['emailErr'] . '</span>';
             echo '
         </div>
         <div>
             <label class="form" for="password">wachtwoord:</label>
             <input class="input" type="text" id="password" name="password" 
-                value="'.(!empty($_POST["password"]) ? $_POST["password"] : '') .'">';
+                value="'.(!empty($data["password"]) ? $data["password"] : '') .'">';
             echo '<span class="error">' . $data['passwordErr'] . '</span>';
             echo '
         </div>

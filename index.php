@@ -109,36 +109,21 @@ function ShowHeader($data){
 }
 
 function ShowMenu(){
-    echo '<ul class="menu">
-    <li class="menuitem"><a href="index.php?page=home">Home</a></li>
-    <li class="menuitem"><a href="index.php?page=about">About</a></li>
-    <li class="menuitem"><a href="index.php?page=contact">Contact</a></li>
-    ';
+    echo '<ul class="menu">';
+    Showmenuitem('home', 'Home');
+    Showmenuitem('about', 'About');
+    Showmenuitem('contact', 'Contact');
     if(IsUserLogIn()){
-        #$name = getLogInUsername();
-        #echo '<li class="menuitem"><a href="index.php?page=logout">Logout'; $name; echo'</a></li>';
-        Showmenuitem("logout", "Logout");
+        Showmenuitem('logout', 'Logout');
     }else{
-        #echo '<li class="menuitem"><a href="index.php?page=register">Register</a></li>
-        #<li class="menuitem"><a href="index.php?page=login">Login</a></li>';
-        Showmenuitem("register", "Registeer");
-        Showmenuitem("login", "Login");
+        Showmenuitem('register', 'Registeer');
+        Showmenuitem('login', 'Login');
     }
     echo '</ul>';
 }
 
 function Showmenuitem($name, $message){
-    switch($name){
-        case 'logout':
-            echo'<li class="menuitem"><a href="index.php?page=logout">Logout</a></li>';
-            break;
-        case 'login':
-            echo'<li class="menuitem"><a href="index.php?page=login">Login</a></li>';
-            break;
-        case 'register':
-            echo'<li class="menuitem"><a href="index.php?page=register">Register</a></li>';
-            break;
-    }
+    echo'<li class="menuitem"><a href="index.php?page=';echo $name; echo'">';echo $message; echo'</a></li>';
 }
 
 function ShowContent($data){

@@ -35,7 +35,7 @@ ul.menu {
 }
 li.menuitem {
     display: inline-block;
-
+    margin-right: 1mm;
 }
 footer {
     background-color: black;

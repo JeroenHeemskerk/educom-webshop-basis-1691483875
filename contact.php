@@ -2,55 +2,49 @@
 include_once "user.service.php";
 function ValidateContact() {
     $firstnameErr = $lastnameErr = $emailErr = $phoneErr = $comprefErr = $feedbackErr = $prefErr = "";
-    $firstname = $lastname = $email = $phone = $compref = $feedback = $pref = "";
+    $pref = TestInput(getPostVar('Pref'));
+    $firstname = TestInput(getPostVar('Firstname'));
+    $lastname = TestInput(getPostVar('Lastname'));
+    $email = TestInput(getPostVar('Email'));
+    $phone = TestInput(getPostVar('PhoneNum'));
+    $compref = TestInput(getPostVar('ComPref'));
+    $feedback = TestInput(getPostVar('Feedback'));
     $valid = false;
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        if (empty($_POST["Pref"])) {
+        if (empty($pref)) {
             $prefErr = "aanhef is verplicht";
         } else {
-            $pref = TestInput($_POST["Pref"]);
+            $pref = TestInput($pref);
         }
-        if (empty($_POST["Firstname"])) {
+        if (empty($firstname)) {
             $firstnameErr = "voornaam is verplicht";
         } else {
-            if (ctype_alpha($_POST["Firstname"])) {
-                $firstname = TestInput($_POST["Firstname"]);
-            } else {
+            if (!ctype_alpha($firstname)) {
                 $firstnameErr = "nummers in je naam zijn niet toegstaan";
             }
         }
-        if (empty($_POST["Lastname"])) {
+        if (empty($lastname)) {
             $lastnameErr = "achternaam is verplicht";
         } else {
-            if (ctype_alpha($_POST["Lastname"])) {
-                $lastname = TestInput($_POST["Lastname"]);
-            } else {
+            if (!ctype_alpha($lastname)) {
                 $lastnameErr = "nummers in je naam zijn niet toegstaan";
             } 
         }
-        if (empty($_POST["Email"])) {
+        if (empty($email)) {
             $emailErr = "email is verplicht";
         } else {
-            if (filter_var($_POST["Email"], FILTER_VALIDATE_EMAIL)) {
-                $email = TestInput($_POST["Email"]);
-            } else {
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $emailErr = "je moet een echt emailadres invullen";
             }
         }
-        if (empty($_POST["PhoneNum"])) {
+        if (empty($phone)) {
             $phoneErr = "telefoonnummer is verplicht";
-        } else {
-            $phone = TestInput($_POST["PhoneNum"]);
         }
-        if (empty($_POST["ComPref"])) {
+        if (empty($compref)) {
             $comprefErr = "keuze is verplicht";
-        } else {
-            $compref = TestInput($_POST["ComPref"]);
         }
-        if (empty($_POST["Feedback"])) {
+        if (empty($feedback)) {
             $feedbackErr = "feedback is verplicht";
-        } else {
-            $feedback = TestInput($_POST["Feedback"]);
         }
         if (!empty($firstname) && !empty($lastname) && !empty($email) && !empty($phone) && !empty($compref) && !empty($feedback)) {
             $valid = true;
@@ -70,10 +64,10 @@ function ValidateContact() {
                 <select name="Pref" id="Pref">
                     <option name="choice" value="">maak uw keuze</option>
                     <option name="Sir" value="Meneer" '; 
-                    if (!empty($_POST["Pref"]) && $_POST['Pref'] == "Meneer") echo 'selected="selected" '; 
+                    if ($data['pref'] == "Meneer") echo 'selected="selected" '; 
                     echo '>Meneer</option>
-                    <option name="Madam" value="Mevrouw" ' . (!empty($_POST["Pref"]) && $_POST['Pref'] == "Mevrouw" ? 'selected="selected"' : '') .'>Mevrouw</option>
-                    <option name="Nothing" value="Niet" ' . (!empty($_POST["Pref"]) && $_POST['Pref'] == "Niet" ? 'selected="selected"' : '') .'>Niet</option>
+                    <option name="Madam" value="Mevrouw" ' . ($data["pref"] == "Mevrouw" ? 'selected="selected"' : '') .'>Mevrouw</option>
+                    <option name="Nothing" value="Niet" ' . ($data["pref"] == "Niet" ? 'selected="selected"' : '') .'>Niet</option>
                 </select>';
                 echo '<span class="error">' . $data['prefErr'] . '</span>';
                 echo '
@@ -81,39 +75,39 @@ function ValidateContact() {
             <div>
                 <label class="form" for="Firstname">Voornaam:</label>
                 <input class="input" type="text" id="Firstname" name="Firstname" 
-                    value="'.(!empty($_POST["Firstname"]) ? $_POST["Firstname"] : '') .'">';
+                    value="'.($data["firstname"]) .'">';
                 echo '<span class="error">' . $data['firstnameErr'] . '</span>';
                 echo '
             </div>
             <div>
                 <label class="form" for="Lastname">Achternaam:</label>
                 <input class="input" type="text" id="Lastname" name="Lastname" 
-                    value="'.(!empty($_POST["Lastname"]) ? $_POST["Lastname"] : '') .'">';
+                    value="'.($data["lastname"]) .'">';
                 echo '<span class="error">' . $data['lastnameErr'] . '</span>';
                 echo '
             </div>
             <div>
                 <label class="form" for="Email">Email:</label>
                 <input class="input" type="email" id="Email" name="Email" 
-                    value="' .(!empty($_POST["Email"]) ? $_POST["Email"] : '') .' ">';
+                    value="' .($data["email"]) .' ">';
                 echo '<span class="error">' . $data['emailErr'] . '</span>';
                 echo '
             </div>
             <div>
                 <label class="form" for="PhoneNum">Telefoonnummer:</label>
                 <input class="input" type="tel" id="PhoneNum" name="PhoneNum"
-                    value="'.(!empty($_POST["PhoneNum"]) ? $_POST["PhoneNum"] : '') .'">';
+                    value="'.($data["phone"]) .'">';
                 echo '<span class="error">' . $data['phoneErr'] . '</span>';
                 echo '
             </div>
             <div>
                 <label class="form" for="ComPref">Op welke manier wilt u bereikt worden?</label>
                 <input type="radio" id="mail" name="ComPref" value="Email"';
-                    if (!empty($_POST["ComPref"])) echo ($_POST["ComPref"] =="Email")?"checked":'' ;
+                    if ($data["compref"]) echo ($data["compref"] =="Email")?"checked":'' ;
                 echo '>
                 <label  for="mail">Email</label>
                 <input type="radio" id="phone" name="ComPref" value="Telefoon" ';
-                    if (!empty($_POST["ComPref"])) echo ($_POST["ComPref"] =="Phone")?"checked":'' ;
+                    if ($data["compref"]) echo ($data["compref"] =="Telefoon")?"checked":'' ;
                 echo '>
                 <label  for="phone">Telefoon</label>';
                 echo '<span class="error">' . $data['comprefErr'] . '</span>';
@@ -122,7 +116,7 @@ function ValidateContact() {
             <div>
                 <label class="form" for="Feedback">Waarover wilt u contact opnemen?</label>
                 <textarea id="Feedback" name="Feedback" rows="4" cols="50">'.
-                (!empty($_POST["Feedback"]) ? $_POST["Feedback"] : '') . '</textarea>';
+                ($data["feedback"]) . '</textarea>';
                 echo '<span class="error">' . $data['feedbackErr'] . '</span>';
                 echo '
             </div>
@@ -132,22 +126,22 @@ function ValidateContact() {
         </form>
     ';}
     function ShowThanksContent($data) { echo '
-        <label>Beste </label>';
+        <a>Beste </a>';
         echo $data["pref"];
-        echo $_POST["Firstname"];
-        echo $_POST["Lastname"]; 
+        echo $data["firstname"];
+        echo $data["lastname"]; 
         echo '<br>
-        <label>Bedankt voor het invullen van onze contact formulier.</label><br>
-        <label>Wij zullen onze reactie sturen naar uw </label>'
-        .(!empty($_POST["ComPref"]) ? $_POST["ComPref"] : '');
+        <a>Bedankt voor het invullen van onze contact formulier.</a><br>
+        <a>Wij zullen onze reactie sturen naar uw </a>'
+        .(!empty($data["ComPref"]) ? $data["ComPref"] : '');
         echo '<br>
-        <label>De informatie die u heeft ingevult: </label><br>
-        <label>Email: </label>';
-        echo $_POST["Email"];
+        <a>De informatie die u heeft ingevult: </a><br>
+        <a>Email: </a>';
+        echo $data["email"];
         echo '<br>
-        <label>Telefoonnummer: </label>';
-        echo $_POST["PhoneNum"]; 
+        <a>Telefoonnummer: </a>';
+        echo $data["phone"]; 
         echo '<br>
-        <label>Uw feedback: </label>';
-        echo $_POST["Feedback"]; echo '<br>
+        <a>Uw feedback: </a>';
+        echo $data["feedback"]; echo '<br>
     ';}
