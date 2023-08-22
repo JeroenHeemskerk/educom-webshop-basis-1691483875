@@ -10,7 +10,7 @@ function ProcessRequest($page){
     switch ($page){
         case 'register':
             $data = CheckRegister();
-            if($data['registervalid'] == true){
+            if($data['registervalid']){
                 StoreUser($data['email'], $data['name'], $data['password']);
                 $page = 'login';
                 $data['loginvalid'] = "";
@@ -18,10 +18,14 @@ function ProcessRequest($page){
             break;
         case 'login':
             $data = CheckLogin();
-            if($data['loginvalid'] == true){
+            if($data['loginvalid']){
                 LoginUser($data);
                 $page = 'home';
             }
+            break;
+        case 'logout':
+            LogoutUser();
+            $page = 'home';
             break;
     }
     $data['page'] = $page;
@@ -102,9 +106,6 @@ function ShowHeader($data){
         case 'login':
             Echo '<h1>Login</h1>';
             break;
-        case 'logout':
-            Echo '<h1>Logout</h1>';
-            break;
     }
 }
 
@@ -114,7 +115,7 @@ function ShowMenu(){
     Showmenuitem('about', 'About');
     Showmenuitem('contact', 'Contact');
     if(IsUserLogIn()){
-        Showmenuitem('logout', 'Logout');
+        Showmenuitem('logout', 'Logout ', getLogInUsername());
     }else{
         Showmenuitem('register', 'Registeer');
         Showmenuitem('login', 'Login');
@@ -122,8 +123,8 @@ function ShowMenu(){
     echo '</ul>';
 }
 
-function Showmenuitem($name, $message){
-    echo'<li class="menuitem"><a href="index.php?page=';echo $name; echo'">';echo $message; echo'</a></li>';
+function Showmenuitem($name, $message, $username = ''){
+    echo'<li class="menuitem"><a href="index.php?page=';echo $name; echo'">';echo $message, $username; echo'</a></li>';
 }
 
 function ShowContent($data){
@@ -145,16 +146,10 @@ function ShowContent($data){
             ShowContactContent();
             break;
         case 'register':
-            #require('register.php');
             ShowRegisterContent($data);
             break;
         case 'login':
-            #require('login.php');
             ShowLoginContent($data);
-            break;
-        case 'logout':
-            #require('logout.php');
-            LogoutUser();
             break;
     }
 }

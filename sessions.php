@@ -1,13 +1,14 @@
 <?php
+session_start();
 function LoginUser($data) {
-    session_start();
     $_SESSION['name'] = $data["name"];
 }
 function LogoutUser() {
-    session_destroy(); 
+    session_unset();
+    session_destroy();
 }
 function IsUserLogIn() {
-    if(session_status() == 2){
+    if(!empty($_SESSION['name'])){
         return true;
     }else{
         return false;
