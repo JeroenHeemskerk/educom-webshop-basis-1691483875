@@ -2,7 +2,9 @@
 include_once "user.service.php";
 function CheckLogin() {
     $emailErr = $passwordErr  = "";
-    $email = $password = $name = "";
+    $name = TestInput(getPostVar('name'));
+    $email = TestInput(getPostVar('email'));
+    $password = TestInput(getPostVar('password'));
     $loginvalid = false;
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user = AuthorizeUser($_POST['email'], $_POST['password']);

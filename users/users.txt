@@ -26,6 +26,4 @@ s.ensssgelmoer@ziggo.nl|test|s
 sss|s|ss
 s@ssssss.com|s|s
 ok@s.com|stijn|s
-k@k.com|s|s
-d.engelmoer@ziggo.nl|StijnEngelmoer|d
-stijn@gmail.com|stijn|s
+e@mail.com|stijn|wachtwoord
